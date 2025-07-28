@@ -1,9 +1,9 @@
 <template>
   <aside
     class="fixed top-0 left-0 h-screen bg-white z-50 shadow-2xl transition-all duration-300"
-    :class="isExpanded ? 'w-64 px-4' : 'w-20 px-2'"
+    :class="isExpanded ? 'w-50 px-4' : 'w-20 px-2'"
   >
-    <div class="flex justify-center py-6">
+    <div class="flex justify-center py-10">
       <img src="@/assets/logo.svg" alt="NF Logo" class="h-8" />
     </div>
 
@@ -54,7 +54,7 @@ import {
   LockClosedIcon,
   LightBulbIcon,
   InformationCircleIcon,
-} from '@heroicons/vue/24/outline'
+} from '@heroicons/vue/24/solid'
 
 defineProps<{ isExpanded: boolean }>()
 </script>
