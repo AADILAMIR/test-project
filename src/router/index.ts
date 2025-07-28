@@ -19,6 +19,7 @@ const router = createRouter({
       name: 'Add Record',
       component: AddRecordView,
     },
+    { path: '/:pathMatch(.*)*', redirect: '/' },
   ],
 })
 
