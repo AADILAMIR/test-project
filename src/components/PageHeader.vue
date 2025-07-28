@@ -1,6 +1,5 @@
 <template>
   <div class="flex items-center justify-between w-full mb-6">
-    <!-- Left: Icon + Title -->
     <div class="flex items-center gap-2">
       <span class="text-green-500 text-3xl leading-none">{{ icon }}</span>
       <h1 class="text-2xl font-bold text-blue-600">{{ title }}</h1>

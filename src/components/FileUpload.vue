@@ -119,10 +119,8 @@ const images = ref<File[]>([...props.modelValue])
 const isDragOver = ref(false)
 const imagePreviews = ref<Map<File, string>>(new Map())
 
-// Computed properties
 const hasError = computed(() => props.required && images.value.length === 0)
 
-// File handling methods
 const onChange = (e: Event) => {
   const files = (e.target as HTMLInputElement).files
   if (files) {
@@ -139,7 +137,6 @@ const onDrop = (e: DragEvent) => {
 }
 
 const addFiles = (newFiles: File[]) => {
-  // Filter only image files
   const imageFiles = newFiles.filter((file) => file.type.startsWith('image/'))
 
   if (imageFiles.length === 0) {
@@ -147,7 +144,6 @@ const addFiles = (newFiles: File[]) => {
     return
   }
 
-  // Check file size limit
   if (props.maxSizePerFile) {
     const oversizedFiles = imageFiles.filter(
       (file) => file.size > props.maxSizePerFile! * 1024 * 1024,
@@ -158,7 +154,6 @@ const addFiles = (newFiles: File[]) => {
     }
   }
 
-  // Check max files limit
   let filesToAdd = imageFiles
   if (props.maxFiles) {
     const availableSlots = props.maxFiles - images.value.length
@@ -169,7 +164,6 @@ const addFiles = (newFiles: File[]) => {
     filesToAdd = imageFiles.slice(0, availableSlots)
   }
 
-  // Add files and create previews
   images.value = [...images.value, ...filesToAdd]
   filesToAdd.forEach((file) => createImagePreview(file))
 
@@ -179,7 +173,6 @@ const addFiles = (newFiles: File[]) => {
 const remove = (index: number) => {
   const fileToRemove = images.value[index]
 
-  // Clean up preview URL
   if (imagePreviews.value.has(fileToRemove)) {
     URL.revokeObjectURL(imagePreviews.value.get(fileToRemove)!)
     imagePreviews.value.delete(fileToRemove)
@@ -189,7 +182,6 @@ const remove = (index: number) => {
   emit('update:modelValue', images.value)
 }
 
-// Utility methods
 const isImageFile = (file: File): boolean => {
   return file.type.startsWith('image/')
 }
@@ -214,8 +206,6 @@ const getImagePreview = (file: File): string => {
 }
 
 const getImageDimensions = (file: File): string => {
-  // This would require loading the image to get dimensions
-  // For now, just return the file type
   return file.type.split('/')[1].toUpperCase()
 }
 
@@ -224,7 +214,6 @@ const previewFile = (file: File) => {
   window.open(url, '_blank')
 }
 
-// Watchers and lifecycle
 watch(
   () => props.modelValue,
   (newFiles) => {
@@ -245,17 +234,14 @@ watch(
   { deep: true },
 )
 
-// Create initial previews
 onMounted(() => {
   images.value.forEach((file) => createImagePreview(file))
 })
 
-// Cleanup on unmount
 const cleanup = () => {
   imagePreviews.value.forEach((url) => URL.revokeObjectURL(url))
   imagePreviews.value.clear()
 }
 
-// Cleanup when component is destroyed
 watch(() => false, cleanup)
 </script>
