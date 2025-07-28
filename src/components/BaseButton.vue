@@ -1,19 +1,3 @@
-<!-- <template>
-  <button
-    type="button"
-    class="bg-blue-600 text-white px-6 py-2 rounded shadow hover:bg-blue-700 transition"
-    @click="onClick"
-  >
-    <slot />
-  </button>
-</template>
-
-<script lang="ts" setup>
-defineProps<{
-  onClick?: () => void
-}>()
-</script> -->
-
 <template>
   <button
     type="button"
