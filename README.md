@@ -7,6 +7,7 @@ A modern, production-ready Vue 3 + TypeScript application built with Vite, Tailw
 ## 📸 UI Highlights
 
 ### Dashboard
+<img width="971" height="576" alt="image" src="https://github.com/user-attachments/assets/5accde83-d4c9-416d-a120-ec385fedb0f4" />
 
 - Summary cards for records submitted, pending, and processed.
 - Quick actions to navigate and manage data efficiently.
