@@ -7,12 +7,17 @@ A modern, production-ready Vue 3 + TypeScript application built with Vite, Tailw
 ## 📸 UI Highlights
 
 ### Dashboard
+Deployed Route: [https://test-project-delta-steel.vercel.app/](https://test-project-delta-steel.vercel.app/)
+Localhost Route: http://localhsot:5173/ 
 <img width="971" height="576" alt="image" src="https://github.com/user-attachments/assets/5accde83-d4c9-416d-a120-ec385fedb0f4" />
 
 - Summary cards for records submitted, pending, and processed.
 - Quick actions to navigate and manage data efficiently.
 
 ### Add Record Wizard
+Deployed Route:  [https://test-project-delta-steel.vercel.app/](https://test-project-delta-steel.vercel.app/add-record)
+Localhost Route: http://localhsot:5173/add-record 
+<img width="1482" height="731" alt="image" src="https://github.com/user-attachments/assets/93d4263d-1433-4ebc-a5ae-40fd12355340" />
 
 - Step-based form (3 steps):
   1. Basic information
