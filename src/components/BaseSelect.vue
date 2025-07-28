@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col gap-1">
-    <label v-if="label" :for="id" class="text-sm font-medium text-gray-700">
-      {{ label }} <span v-if="required" class="text-red-500">*</span>
+    <label v-if="label" :for="id" class="text-sm font-medium text-gray-400">
+      {{ label }} <span v-if="required" class="text-gray-400">*</span>
     </label>
     <div class="relative">
       <select
@@ -10,8 +10,8 @@
         @change="$emit('update:modelValue', ($event.target as HTMLSelectElement).value)"
         :required="required"
         :class="[
-          'w-full appearance-none px-4 py-2 pr-10 text-gray-700 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500',
-          { 'border-red-500': error },
+          'w-full appearance-none px-4 py-2 pr-10 text-gray-700 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600 shadow-[2px_2px_1px_0px_rgba(0,_0,_0,_0.5)]',
+          { 'text-gray-400': error },
         ]"
       >
         <option value="" disabled selected v-if="!modelValue">Select an option</option>

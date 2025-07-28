@@ -9,6 +9,7 @@ import SealTabs from '@/components/SealTabs.vue'
 import SteppeComponent from '@/components/StepperComponent.vue'
 import { step1Schema, step2Schema, step3Schema } from '@/validations/schema'
 import { timeSlots } from '@/utils/helperFunctions'
+import { useToastQueue } from '@/composables/useToastQueue'
 
 interface Sample {
   id: number
@@ -26,7 +27,8 @@ interface Seal {
   samples?: Sample[]
 }
 
-const currentStep = ref<number>(1)
+const currentStep = ref<number>(3)
+const { show } = useToastQueue()
 const totalSteps: number = 3
 const stepLabels = ['Create New Record', 'Review', 'Seal']
 
@@ -243,12 +245,11 @@ const getCurrentStepValues = () => {
 const nextStep = async () => {
   if (currentStep.value < totalSteps) {
     const isValid = await validateCurrentStep()
-    console.log('Step validation result:', isValid)
     if (isValid) {
       currentStep.value++
     } else {
       const result = await validate()
-      console.log('res', result)
+      console.info('result', result)
     }
   }
 }
@@ -288,14 +289,12 @@ const handleUpdateSeals = (updated: Seal[]) => {
 setFieldValue('seals', seals.value)
 
 const submitForm = handleSubmit((values) => {
-  console.log('Final Submission:', values)
+  show('Form Submitted Successfully', 'success')
+  console.info('Final Submission:', values)
 })
 
 const handleNextOrSubmit = () => {
-  console.log('herererer')
   if (isLastStep.value) {
-    console.log('hey', isLastStep.value)
-
     submitForm()
   } else {
     nextStep()
@@ -311,8 +310,9 @@ const handleNextOrSubmit = () => {
     <h3 class="text-lg font-semibold mb-6">{{ stepLabels[currentStep - 1] }}</h3>
 
     <template v-if="currentStep === 1">
-      <div class="w-full max-w-5xl">
-        <div class="grid grid-cols-1 gap-4 sm:gap-6 md:grid-cols-2 lg:grid-cols-3 mb-8">
+      <div class="w-full max-w-6xl mx-auto space-y-6">
+        <!-- Row 1: 2 fields -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
           <BaseInput
             label="Date received"
             type="date"
@@ -327,6 +327,8 @@ const handleNextOrSubmit = () => {
             :error="timeReceivedError"
             required
           />
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           <BaseSelect
             label="Customer title"
             :options="['Mr', 'Ms', 'Mrs']"
@@ -336,6 +338,8 @@ const handleNextOrSubmit = () => {
           />
           <BaseInput label="Customer name" v-model="customerName" :error="customerNameError" />
           <BaseInput label="First name" v-model="firstName" :error="firstNameError" />
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
           <BaseInput
             label="Date of birth"
             placeholder="DD/MM/YYYY"

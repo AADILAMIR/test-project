@@ -1,25 +1,28 @@
 <template>
   <div class="flex items-center justify-between w-full mb-6">
     <div class="flex items-center gap-2">
-      <span class="text-green-500 text-3xl leading-none">{{ icon }}</span>
-      <h1 class="text-2xl font-bold text-blue-600">{{ title }}</h1>
+      <component :is="icon" class="w-10 h-10" :class="color ?? 'text-blue-600'" />
+      <h1 class="text-3xl font-bold text-blue-600">{{ title }}</h1>
     </div>
 
     <div class="flex items-center gap-4">
       <button
         @click="$emit('toggle-sidebar')"
-        class="text-blue-600 hover:text-blue-800 text-2xl transition-colors"
+        class="text-blue-600 hover:text-blue-800 transition-colors"
       >
-        ☰
+        <Bars3Icon class="w-7 h-7" />
       </button>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
+import { Bars3Icon } from '@heroicons/vue/24/solid'
+import type { FunctionalComponent } from 'vue'
 defineProps<{
-  icon: string
+  icon: FunctionalComponent
   title: string
+  color?: string
 }>()
 
 defineEmits<{

@@ -199,8 +199,8 @@ updateValidation()
 
 <template>
   <div class="flex flex-col w-full mx-auto">
-    <div class="flex items-center border-b overflow-x-auto">
-      <div class="flex pb-2">
+    <div class="w-full overflow-x-auto border-b">
+      <div>
         <template v-for="(seal, i) in seals" :key="seal.id">
           <button
             @click="selectedSeal = i"
@@ -264,7 +264,7 @@ updateValidation()
             </div>
           </div>
 
-          <div class="mb-4">
+          <div class="w-full px-2 sm:px-4 md:px-0 max-w-3xl mx-auto my-6">
             <FileUpload
               :model-value="seal.images"
               :input-id="`file-upload-${i}`"
