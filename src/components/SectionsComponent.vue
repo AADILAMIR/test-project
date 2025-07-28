@@ -6,7 +6,7 @@
         v-for="item in props.items"
         :key="item.id ?? item.text"
         @click="handleClick(item)"
-        class="w-64 cursor-pointer bg-white border rounded-lg px-6 py-3 text-gray-800 text-sm shadow-sm hover:shadow-md transition-shadow duration-200 shadow-[2px_2px_1px_0px_rgba(0,_0,_0,_0.5)] border-gray-300"
+        class="w-64 cursor-pointer bg-white border rounded-lg px-6 py-3 text-gray-800 text-sm hover:shadow-md transition-shadow duration-200 shadow-[2px_2px_1px_0px_rgba(0,_0,_0,_0.5)] border-gray-300"
       >
         {{ item.text }}
       </div>

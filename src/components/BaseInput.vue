@@ -13,7 +13,7 @@
       @input="$emit('update:modelValue', ($event.target as HTMLInputElement).value)"
       :required="required"
       :class="[
-        'border border-gray-300 px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-600 shadow-[2px_2px_1px_0px_rgba(0,_0,_0,_0.5)]',
+        'border border-gray-300 px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 shadow-[2px_2px_1px_0px_rgba(0,_0,_0,_0.5)]',
         { 'border-red-500': error },
       ]"
     />
