@@ -58,17 +58,17 @@ const removeSample = (sampleIndex: number) => {
   emit('update-samples', [...samples.value])
 }
 
-const addSample = () => {
-  const newSample: Sample = {
-    id: samples.value.length + 1,
-    date: '',
-    time: '15:00:00',
-    description: '',
-    analysis: '',
-  }
-  samples.value.push(newSample)
-  emit('update-samples', [...samples.value])
-}
+// const addSample = () => {
+//   const newSample: Sample = {
+//     id: samples.value.length + 1,
+//     date: '',
+//     time: '15:00:00',
+//     description: '',
+//     analysis: '',
+//   }
+//   samples.value.push(newSample)
+//   emit('update-samples', [...samples.value])
+// }
 
 // Watch for props changes
 watch(

@@ -8,7 +8,6 @@ import BaseInput from '@/components/BaseInput.vue'
 import BaseSelect from '@/components/BaseSelect.vue'
 import SealTabs from '@/components/SealTabs.vue'
 import Stepper from '@/components/StepperComponent.vue'
-import PageHeader from '@/components/PageHeader.vue'
 
 interface Sample {
   id: number
@@ -335,6 +334,7 @@ const validateCurrentStep = async (): Promise<boolean> => {
   } catch (error) {
     const result = await validate()
     console.warn('Zod validation failed, fallback veevalidate errors:', result)
+    console.error('err', error)
     return false
   }
 }
@@ -390,7 +390,7 @@ const nextStep = async () => {
 
 const prevStep = () => {
   if (currentStep.value > 1) {
-    currentStep.value
+    currentStep.value--
   }
 }
 
