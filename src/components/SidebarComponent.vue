@@ -8,24 +8,44 @@
     </div>
 
     <nav class="space-y-3">
-      <SidebarItem
+      <SidebarItemComponent
         :icon="Squares2X2Icon"
         label="Dashboard"
         :isExpanded="isExpanded"
         to="/dashboard"
       />
-      <SidebarItem :icon="FolderIcon" label="Records" :isExpanded="isExpanded" to="/add-record" />
-      <SidebarItem :icon="UserIcon" label="My Account" :isExpanded="isExpanded" to="/" />
-      <SidebarItem :icon="UsersIcon" label="Users" :isExpanded="isExpanded" to="/" />
-      <SidebarItem :icon="LockClosedIcon" label="Security" :isExpanded="isExpanded" to="/" />
-      <SidebarItem :icon="LightBulbIcon" label="Change Theme" :isExpanded="isExpanded" to="/" />
-      <SidebarItem :icon="InformationCircleIcon" label="Info" :isExpanded="isExpanded" to="/" />
+      <SidebarItemComponent
+        :icon="FolderIcon"
+        label="Records"
+        :isExpanded="isExpanded"
+        to="/add-record"
+      />
+      <SidebarItemComponent :icon="UserIcon" label="My Account" :isExpanded="isExpanded" to="/" />
+      <SidebarItemComponent :icon="UsersIcon" label="Users" :isExpanded="isExpanded" to="/" />
+      <SidebarItemComponent
+        :icon="LockClosedIcon"
+        label="Security"
+        :isExpanded="isExpanded"
+        to="/"
+      />
+      <SidebarItemComponent
+        :icon="LightBulbIcon"
+        label="Change Theme"
+        :isExpanded="isExpanded"
+        to="/"
+      />
+      <SidebarItemComponent
+        :icon="InformationCircleIcon"
+        label="Info"
+        :isExpanded="isExpanded"
+        to="/"
+      />
     </nav>
   </aside>
 </template>
 
 <script lang="ts" setup>
-import SidebarItem from './SidebarItemComponent.vue'
+import SidebarItemComponent from './SidebarItemComponent.vue'
 import {
   Squares2X2Icon,
   FolderIcon,

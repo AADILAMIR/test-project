@@ -1,17 +1,16 @@
 <template>
   <div>
-    <Sections title="Summaries" :items="summaryItems" @cardClick="showToast" />
-    <Sections title="Quick Menu" :items="quickMenuItems" @cardClick="showToast" />
+    <SectionsComponent title="Summaries" :items="summaryItems" @cardClick="showToast" />
+    <SectionsComponent title="Quick Menu" :items="quickMenuItems" @cardClick="showToast" />
   </div>
 </template>
 
 <script lang="ts" setup>
-import Sections from '@/components/SectionsComponent.vue'
+import SectionsComponent from '@/components/SectionsComponent.vue'
 import { useToastQueue } from '@/composables/useToastQueue.ts'
-import { ref } from 'vue'
 
 const { show } = useToastQueue()
-const re = ref()
+
 const summaryItems = [
   { text: 'Total Records' },
   { text: 'Records Pending' },

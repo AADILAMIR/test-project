@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import { z } from 'zod'
 import { useForm, useField } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/zod'
 import BaseButton from '@/components/BaseButton.vue'
 import BaseInput from '@/components/BaseInput.vue'
 import BaseSelect from '@/components/BaseSelect.vue'
 import SealTabs from '@/components/SealTabs.vue'
-import Stepper from '@/components/StepperComponent.vue'
-import PageHeader from '@/components/PageHeader.vue'
+import SteppeComponent from '@/components/StepperComponent.vue'
+import { step1Schema, step2Schema, step3Schema } from '@/validations/schema'
+import { timeSlots } from '@/utils/helperFunctions'
 
 interface Sample {
   id: number
@@ -26,116 +26,12 @@ interface Seal {
   samples?: Sample[]
 }
 
-// Stepper state
 const currentStep = ref<number>(1)
 const totalSteps: number = 3
 const stepLabels = ['Create New Record', 'Review', 'Seal']
 
-// Schema definitions
-const step1Schema = z.object({
-  dateReceived: z
-    .string()
-    .min(1, 'Date received is required')
-    .regex(/^\d{4}\d{2}\d{2}$/, 'Invalid date format'),
-  timeReceived: z
-    .string()
-    .min(1, 'Time received is required')
-    .regex(/^\d{2}:\d{2}:00$/, 'Invalid time format'),
-  customerTitle: z
-    .enum(['Mr', 'Ms', 'Mrs'])
-    .or(z.literal('').refine((val) => val !== '', { message: 'Customer title is required' })),
-  customerName: z
-    .string()
-    .max(100, 'Customer name must be less than 100 characters')
-    .optional()
-    .or(z.literal('')),
-  firstName: z
-    .string()
-    .max(100, 'First name must be less than 100 characters')
-    .optional()
-    .or(z.literal('')),
-  dateOfBirth: z
-    .string()
-    .regex(/^\d{2}\/\d{2}\/\d{4}$/, 'Invalid date format (DD/MM/YYYY)')
-    .optional()
-    .or(z.literal('')),
-  sex: z.enum(['Male', 'Female']).optional().or(z.literal('')),
-})
-
-const step2Schema = z.object({
-  nameOpj: z.string().min(1, 'OPJ name is required'),
-  servicePolice: z
-    .string()
-    .max(100, 'Service police must be less than 100 characters')
-    .optional()
-    .or(z.literal('')),
-  opjGrade: z
-    .string()
-    .max(50, 'OPJ grade must be less than 50 characters')
-    .optional()
-    .or(z.literal('')),
-  pvNumber: z
-    .string()
-    .max(50, 'PV number must be less than 50 characters')
-    .optional()
-    .or(z.literal('')),
-  nationality: z.string().optional().or(z.literal('')),
-  tgiOf: z.string().optional().or(z.literal('')),
-  magistrateName: z.string().optional().or(z.literal('')),
-  magistrateGrade: z.string().optional().or(z.literal('')),
-  prosecutorOfficeNumber: z
-    .string()
-    .max(50, 'Prosecutor office number must be less than 50 characters')
-    .optional()
-    .or(z.literal('')),
-  instructionNumber: z
-    .string()
-    .max(50, 'Instruction number must be less than 50 characters')
-    .optional()
-    .or(z.literal('')),
-  justiceIdentifier: z
-    .string()
-    .max(50, 'Justice identifier must be less than 50 characters')
-    .optional()
-    .or(z.literal('')),
-})
-
-const step3Schema = z.object({
-  seals: z
-    .array(
-      z.object({
-        id: z.number(),
-        receptionDate: z
-          .string()
-          .min(1, 'Reception date is required')
-          .regex(/^\d{4}\d{2}\d{2}$/, 'Invalid date format'),
-        sealState: z.string().min(1, 'Seal state is required'),
-        images: z.array(z.instanceof(File)).min(1, 'At least one image is required'),
-        samples: z
-          .array(
-            z.object({
-              id: z.number(),
-              date: z
-                .string()
-                .min(1, 'Sample date is required')
-                .regex(/^\d{4}\d{2}\d{2}$/, 'Invalid date format'),
-              time: z
-                .string()
-                .min(1, 'Sample time is required')
-                .regex(/^\d{2}:\d{2}:00$/, 'Invalid time format'),
-              description: z.string().min(1, 'Description is required'),
-              analysis: z.string().optional(),
-            }),
-          )
-          .optional(),
-      }),
-    )
-    .min(1, 'At least one seal is required'),
-})
-
 const combinedSchema = step1Schema.merge(step2Schema).merge(step3Schema)
 
-// Form setup with veevalidate  using individual step schemas
 const { handleSubmit, validate, errors, setFieldValue } = useForm({
   validationSchema: toTypedSchema(combinedSchema),
   initialValues: {
@@ -284,37 +180,6 @@ const seals = ref<Seal[]>([
   },
 ])
 
-// Time slots generation
-const timeSlots = Array.from({ length: 96 }, (_, i) => {
-  const h = String(Math.floor(i / 4)).padStart(2, '0')
-  const m = String((i % 4) * 15).padStart(2, '0')
-  return `${h}:${m}:00`
-})
-
-// Stepspecific validation using Zod directly
-// const validateCurrentStep = async (): Promise<boolean> => {
-//   try {
-//     const currentValues = getCurrentStepValues()
-
-//     switch (currentStep.value) {
-//       case 1:
-//         await step1Schema.parseAsync(currentValues)
-//         break
-//       case 2:
-//         await step2Schema.parseAsync(currentValues)
-//         break
-//       case 3:
-//         await step3Schema.parseAsync(currentValues)
-//         break
-//     }
-
-//     return true
-//   } catch (error) {
-//     console.log('Validation errors for step', currentStep.value, ':', error)
-//     return false
-//   }
-// }
-
 const validateCurrentStep = async (): Promise<boolean> => {
   try {
     const currentValues = getCurrentStepValues()
@@ -334,7 +199,8 @@ const validateCurrentStep = async (): Promise<boolean> => {
     return true
   } catch (error) {
     const result = await validate()
-    console.warn('Zod validation failed, fallback veevalidate errors:', result)
+    console.warn('Zod validation failed, fallback vee-validate errors:', result)
+    console.error('err', error)
     return false
   }
 }
@@ -374,7 +240,6 @@ const getCurrentStepValues = () => {
   }
 }
 
-// Step navigation
 const nextStep = async () => {
   if (currentStep.value < totalSteps) {
     const isValid = await validateCurrentStep()
@@ -390,7 +255,7 @@ const nextStep = async () => {
 
 const prevStep = () => {
   if (currentStep.value > 1) {
-    currentStep.value
+    currentStep.value--
   }
 }
 
@@ -439,15 +304,15 @@ const handleNextOrSubmit = () => {
 </script>
 
 <template>
-  <div class="flex flexcol itemscenter wfull px4">
-    <div class="flex justifycenter wfull mb4">
-      <Stepper :currentStep="currentStep" :totalSteps="totalSteps" />
+  <div class="flex flex-col items-center w-full px-4">
+    <div class="flex justify-center w-full mb-4">
+      <SteppeComponent :currentStep="currentStep" :totalSteps="totalSteps" />
     </div>
-    <h3 class="textlg fontsemibold mb6">{{ stepLabels[currentStep - 1] }}</h3>
+    <h3 class="text-lg font-semibold mb-6">{{ stepLabels[currentStep - 1] }}</h3>
 
-    <template vif="currentStep === 1">
-      <div class="wfull maxw5xl">
-        <div class="grid gridcols1 gap4 sm:gap6 md:gridcols2 lg:gridcols3 mb8">
+    <template v-if="currentStep === 1">
+      <div class="w-full max-w-5xl">
+        <div class="grid grid-cols-1 gap-4 sm:gap-6 md:grid-cols-2 lg:grid-cols-3 mb-8">
           <BaseInput
             label="Date received"
             type="date"
@@ -482,9 +347,9 @@ const handleNextOrSubmit = () => {
       </div>
     </template>
 
-    <template velseif="currentStep === 2">
-      <div class="wfull maxw5xl">
-        <div class="grid gridcols1 gap4 sm:gap6 md:gridcols2 lg:gridcols3 mb8">
+    <template v-else-if="currentStep === 2">
+      <div class="w-full max-w-5xl">
+        <div class="grid grid-cols-1 gap-4 sm:gap-6 md:grid-cols-2 lg:grid-cols-3 mb-8">
           <BaseSelect
             label="Name OPJ"
             :options="['John Doe', 'Jane Smith']"
@@ -538,29 +403,29 @@ const handleNextOrSubmit = () => {
       </div>
     </template>
 
-    <template velse>
-      <div class="wfull maxw5xl">
-        <SealTabs :sealsData="seals" :errors="errors" @updateseals="handleUpdateSeals" />
+    <template v-else>
+      <div class="w-full max-w-5xl">
+        <SealTabs :sealsData="seals" :errors="errors" @update-seals="handleUpdateSeals" />
       </div>
     </template>
 
-    <div class="flex flexcol sm:flexrow justifyend gap4 mt8 wfull maxw5xl">
+    <div class="flex flex-col sm:flex-row justify-end gap-4 mt-8 w-full max-w-5xl">
       <BaseButton
-        vif="currentStep > 1"
+        v-if="currentStep > 1"
         @click="prevStep"
         variant="secondary"
-        class="wfull sm:wauto px4 py2"
+        class="w-full sm:w-auto px-4 py-2"
       >
-        <i class="fas faarrowleft mr2"></i> Previous
+        <i class="fas fa-arrow-left mr-2"></i> Previous
       </BaseButton>
       <BaseButton
         @click="handleNextOrSubmit"
         variant="primary"
-        class="wfull sm:wauto px4 py2"
+        class="w-full sm:w-auto px-4 py-2"
         :disable="currentStepErrors"
       >
         {{ isLastStep ? 'Finish' : 'Next' }}
-        <i :class="isLastStep ? 'fas facheck ml2' : 'fas faarrowright ml2'"></i>
+        <i :class="isLastStep ? 'fas fa-check ml-2' : 'fas fa-arrow-right ml-2'"></i>
       </BaseButton>
     </div>
   </div>

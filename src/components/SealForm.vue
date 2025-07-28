@@ -4,6 +4,7 @@ import BaseInput from './BaseInput.vue'
 import BaseSelect from './BaseSelect.vue'
 import BaseButton from './BaseButton.vue'
 import CardWrapper from './CardWrapper.vue'
+import { timeSlots } from '@/utils/helperFunctions'
 
 interface Sample {
   id: number
@@ -29,12 +30,6 @@ const emit = defineEmits<{
 
 const samples = ref<Sample[]>(props.samples || [])
 
-const timeSlots = Array.from({ length: 96 }, (_, i) => {
-  const h = String(Math.floor(i / 4)).padStart(2, '0')
-  const m = String((i % 4) * 15).padStart(2, '0')
-  return `${h}:${m}:00`
-})
-
 const getFieldError = (sampleIndex: number, field: string): string => {
   const sealIndex = props.sealIndex - 1
   const fieldPath = `seals.${sealIndex}.samples.${sampleIndex}.${field}`
@@ -58,19 +53,18 @@ const removeSample = (sampleIndex: number) => {
   emit('update-samples', [...samples.value])
 }
 
-const addSample = () => {
-  const newSample: Sample = {
-    id: samples.value.length + 1,
-    date: '',
-    time: '15:00:00',
-    description: '',
-    analysis: '',
-  }
-  samples.value.push(newSample)
-  emit('update-samples', [...samples.value])
-}
+// const addSample = () => {
+//   const newSample: Sample = {
+//     id: samples.value.length + 1,
+//     date: '',
+//     time: '15:00:00',
+//     description: '',
+//     analysis: '',
+//   }
+//   samples.value.push(newSample)
+//   emit('update-samples', [...samples.value])
+// }
 
-// Watch for props changes
 watch(
   () => props.samples,
   (newSamples) => {
