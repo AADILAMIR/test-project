@@ -1,0 +1,17 @@
+name: CI - Main Workflow
+
+on:
+  push:
+    branches: [master, dev, uat]
+  pull_request:
+    branches: [master, dev, uat]
+
+jobs:
+  lint-format:
+    name: Trigger Lint & Format
+    uses: ./.github/workflows/ci-lint-format.yml
+
+  build:
+    name: Trigger Build
+    needs: lint-format
+    uses: ./.github/workflows/ci-build.yml
