@@ -1,7 +1,6 @@
 <template>
   <div class="flex">
-    <Sidebar :isExpanded="sidebarExpanded" />
-
+    <SidebarComponent :isExpanded="sidebarExpanded" @close="sidebarExpanded = false" />
     <div :class="['transition-all duration-300 flex-1 min-h-screen bg-white', 'ml-20']">
       <div class="p-10">
         <PageHeader
@@ -23,9 +22,9 @@
 <script setup lang="ts">
 import { ref, computed, type FunctionalComponent } from 'vue'
 import { useRoute } from 'vue-router'
-import Sidebar from '@/components/SidebarComponent.vue'
 import PageHeader from '@/components/PageHeader.vue'
 import { Squares2X2Icon, Cog6ToothIcon, PlusIcon } from '@heroicons/vue/24/solid'
+import SidebarComponent from '@/components/SidebarComponent.vue'
 const sidebarExpanded = ref(false)
 
 const route = useRoute()

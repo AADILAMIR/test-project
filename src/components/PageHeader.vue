@@ -9,6 +9,7 @@
       <button
         @click="$emit('toggle-sidebar')"
         class="text-blue-600 hover:text-blue-800 transition-colors"
+        data-sidebar-toggle
       >
         <Bars3Icon class="w-7 h-7" />
       </button>

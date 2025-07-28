@@ -27,7 +27,7 @@ interface Seal {
   samples?: Sample[]
 }
 
-const currentStep = ref<number>(3)
+const currentStep = ref<number>(1)
 const { show } = useToastQueue()
 const totalSteps: number = 3
 const stepLabels = ['Create New Record', 'Review', 'Seal']

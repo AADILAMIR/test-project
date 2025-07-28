@@ -1,5 +1,6 @@
 <template>
   <aside
+    ref="sidebarRef"
     class="fixed top-0 left-0 h-screen bg-white z-50 shadow-2xl transition-all duration-300"
     :class="isExpanded ? 'w-50 px-4' : 'w-20 px-2'"
   >
@@ -55,6 +56,32 @@ import {
   LightBulbIcon,
   InformationCircleIcon,
 } from '@heroicons/vue/24/solid'
+import { onMounted, onBeforeUnmount, ref } from 'vue'
 
 defineProps<{ isExpanded: boolean }>()
+
+const emit = defineEmits<{
+  (e: 'close', event: Event): void
+}>()
+
+const sidebarRef = ref<HTMLElement | null>(null)
+
+function handleOutsideClick(event: MouseEvent) {
+  const target = event.target as HTMLElement
+
+  const clickedToggleButton = target.closest('[data-sidebar-toggle]')
+  const clickedInsideSidebar = sidebarRef.value?.contains(target)
+
+  if (!clickedInsideSidebar && !clickedToggleButton) {
+    emit('close', event)
+  }
+}
+
+onMounted(() => {
+  document.addEventListener('click', handleOutsideClick)
+})
+
+onBeforeUnmount(() => {
+  document.removeEventListener('click', handleOutsideClick)
+})
 </script>
