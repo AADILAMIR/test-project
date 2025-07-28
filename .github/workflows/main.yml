@@ -2,9 +2,9 @@ name: CI - Main Workflow
 
 on:
   push:
-    branches: [master, dev, uat, setup-*]
+    branches: [master, dev, uat]
   pull_request:
-    branches: [master, dev, uat, setup-*]
+    branches: [master, dev, uat]
 
 jobs:
   lint-format:
