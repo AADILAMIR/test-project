@@ -12,12 +12,11 @@ app.use(ToastPlugin, {
   duration: 5000,
   dismissible: true,
   pauseOnHover: true,
-  closeOnClick: false, // Prevents accidental closes
+  closeOnClick: false,
   queue: true,
   maxToasts: 3,
 })
 
-// app.use(Toast)
 app.use(router)
 
 app.mount('#app')
